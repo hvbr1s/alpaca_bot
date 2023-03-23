@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <title>Alpaca Bot &#129433;</title>
+    <style>
+
+body {
+        display: left;
+        flex-direction: column;
+        font-family: "Open Sans", sans-serif;
+        background-color: white;
+        color: black;
+        padding: 12px;
+        font-family: 'Press Start 2P', cursive;
+      } 
+
+      button {
+        display: flex;
+        text-align: center;
+        background: rgb(210, 207, 210);
+        color: rgb(7, 7, 7);         
+        cursor: pointer;
+        border: 2px solid rgb(7, 7, 7);
+        border-radius: 5px;
+        padding: 8px 16px;
+        box-shadow: 2px 2px 0 0 black,
+        4px 4px 0 0 white;
+        transition-duration: 200ms;
+        font-family: 'Press Start 2P', cursive;
+      }
+
+      button:hover {
+        box-shadow: 3px 3px black, 6px 6px 0 0 white;
+        transform: translate(-2px, 2px);
+      }
+
+      input[type="text"] {
+        background-color: #444; 
+        color: rgb(231, 224, 224); 
+        border: none;
+        padding: 8px;
+        border-radius: 4px;
+      }
+
+      input[type="text"]:focus {
+        background-color: #dddddd; 
+        outline: none;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+      }
+
+      input[type="text"] {
+        background-color: #9f9c9c; 
+        color:black; 
+        border: none;
+        padding: 8px;
+        border-radius: 4px;
+        width: 25%;
+        height: 100px; /* change this value to adjust the height */
+        margin-bottom: 16px; /* change this value to adjust the space between elements */
+      }
+
+      dalai-response {
+        display: none;
+        background-color: #666;
+        color: white;
+        border: none;
+        padding: 8px;
+        border-radius: 4px;
+        width: 25%;
+        height: 100px;
+        margin-top: 16px;
+        font-family: Arial, sans-serif;
+      }
+
+
+    </style>
+</head>
+<body>
+  <h1>Alpaca Bot &#129433;</h1>
+
+  <label for="dalai-input" id="dalai-prompt">Enter your text:</label>
+  <input id="dalai-input" type="text">
+  <button id="dalai-btn">Submit</button>
+  
+  <section id="loading">
+
+    <p>Loading...</p>
+
+  </section>   
+
+
+  <section id="dalai-response">
+
+  </section>
+  
+</body>
+
+<script>
+
+
+// Dalai request functionality
+  const dalaiInput = document.getElementById('dalai-input');
+  const dalaiBtn = document.getElementById('dalai-btn');
+  const dalaiResponse = document.getElementById('dalai-response');
+  const loadingScreen = document.getElementById('loading')
+  const enterText = document.getElementById('dalai-prompt')
+
+  loadingScreen.style.display = "none"
+
+  dalaiBtn.addEventListener('click', async () => {
+    if (dalaiInput.value) {
+      
+      dalaiInput.style.display = "none"
+      dalaiBtn.style.display = "none"
+      loadingScreen.style.display = "flex"
+      enterText.style.display = "none"
+
+
+      const response = await fetch('/dalai_request', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ input: dalaiInput.value })
+      });
+      const data = await response.json();
+      dalaiInput.style.display = "none"
+      // Display the response in the HTML element
+      loadingScreen.style.display = "none"
+      enterText.style.display = "none"
+      dalaiResponse.innerHTML = `<p>${data.chatsays}</p>`;
+    }
+  });
+</script>
+</html>
