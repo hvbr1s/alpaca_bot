@@ -30,6 +30,7 @@ body {
         box-shadow: 2px 2px 0 0 black,
         4px 4px 0 0 white;
         transition-duration: 200ms;
+        text-decoration: none;
         font-family: 'Press Start 2P', cursive;
       }
 
@@ -81,6 +82,7 @@ body {
       }
 
 
+
     </style>
 </head>
 <body>
@@ -100,6 +102,11 @@ body {
   <section id="dalai-response">
 
   </section>
+  <section id="try-again">
+    <a href="http://localhost:8888/">
+        <button class="try-button"><b>Start again</b></button>
+    </a> 
+</section>
   
 </body>
 
@@ -112,8 +119,10 @@ body {
   const dalaiResponse = document.getElementById('dalai-response');
   const loadingScreen = document.getElementById('loading')
   const enterText = document.getElementById('dalai-prompt')
+  const tryAgain = document.getElementById('try-again')
 
   loadingScreen.style.display = "none"
+  tryAgain.style.display = "none"
 
   dalaiBtn.addEventListener('click', async () => {
     if (dalaiInput.value) {
@@ -129,13 +138,15 @@ body {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ input: dalaiInput.value })
+        body: JSON.stringify({ input: "Give a short answer to this question: " + dalaiInput.value })
       });
       const data = await response.json();
       dalaiInput.style.display = "none"
       // Display the response in the HTML element
       loadingScreen.style.display = "none"
       enterText.style.display = "none"
+      dalaiInput.style.display = "none"
+      tryAgain.style.display = "flex"
       dalaiResponse.innerHTML = `<p>${data.chatsays}</p>`;
     }
   });
