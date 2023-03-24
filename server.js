@@ -23,16 +23,21 @@ app.post('/dalai_request', (req, res) => {
       prompt: input,
     }, (token) => {
       console.log(token);
-      
       chunks.push(token);
     })
     .then(() => {
-      const chatsays = chunks.join(''); 
-      
-      res.json({ chatsays });
+      const response = chunks.join('');
+      const startIndex = response.indexOf('\r\n');
+      let truncatedResponse = '';
+  
+      if (startIndex !== -1) {
+        truncatedResponse = response.slice(startIndex + 2); 
+      } else {
+        truncatedResponse = response;
+      }
+  
+      res.json({ chatsays: truncatedResponse });
     })
-
-
 });
 
 app.get('/', (req, res) => {
