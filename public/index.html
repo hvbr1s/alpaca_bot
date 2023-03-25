@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
   <title>Alpaca Bot &#129433;</title>
     <style>
 
@@ -88,7 +87,7 @@ body {
 <body>
   <h1>Alpaca Bot &#129433;</h1>
 
-  <label for="dalai-input" id="dalai-prompt">Enter your text:</label>
+  <label for="dalai-input" id="dalai-prompt">Type your question:</label>
   <input id="dalai-input" type="text">
   <button id="dalai-btn">Submit</button>
   
@@ -112,6 +111,8 @@ body {
 
 <script>
 
+
+// Dalai request functionality
   const dalaiInput = document.getElementById('dalai-input');
   const dalaiBtn = document.getElementById('dalai-btn');
   const dalaiResponse = document.getElementById('dalai-response');
@@ -136,7 +137,12 @@ body {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ input: "Give a short answer to this question: " + dalaiInput.value })
+        body: JSON.stringify({ input: 
+        `Below is an instruction that describes a task, paired with an input that provides further context. Write a response that appropriately completes the request.
+        ### Instruction: ${dalaiInput.value}
+        ### Response: `
+        })
+
       });
       const data = await response.json();
       dalaiInput.style.display = "none"
