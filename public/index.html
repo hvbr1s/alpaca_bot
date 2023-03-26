@@ -6,8 +6,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <title>Alpaca Bot &#129433;</title>
     <style>
-
-body {
+      
+      body {
         display: left;
         flex-direction: column;
         font-family: "Open Sans", sans-serif;
@@ -31,6 +31,8 @@ body {
         transition-duration: 200ms;
         text-decoration: none;
         font-family: 'Press Start 2P', cursive;
+        margin-bottom: 16px;
+        text-decoration: none;
       }
 
       button:hover {
@@ -63,8 +65,8 @@ body {
         padding: 8px;
         border-radius: 4px;
         width: 25%;
-        height: 100px;
-        margin-bottom: 16px;
+        height: 100px; /* change this value to adjust the height */
+        margin-bottom: 16px; /* change this value to adjust the space between elements */
       }
 
       dalai-response {
@@ -81,6 +83,30 @@ body {
       }
 
 
+      .response-container {
+        margin-top: 16px;
+        margin-bottom: 16px;
+      }
+      
+      .response {
+        background-color: #666;
+        color: white;
+        padding: 8px;
+        border-radius: 4px;
+        margin-bottom: 8px;
+        font-family: Arial, sans-serif;
+      }
+      
+      .user-input {
+        background-color: #9f9c9c;
+        color: black;
+        padding: 8px;
+        border-radius: 4px;
+        margin-bottom: 8px;
+        font-family: Arial, sans-serif;
+      }
+
+
 
     </style>
 </head>
@@ -90,45 +116,41 @@ body {
   <label for="dalai-input" id="dalai-prompt">Type your question:</label>
   <input id="dalai-input" type="text">
   <button id="dalai-btn">Submit</button>
-  
-  <section id="loading">
-
-    <p>Loading...</p>
-
-  </section>   
-
-
-  <section id="dalai-response">
-
-  </section>
   <section id="try-again">
     <a href="http://localhost:8888/">
-        <button class="try-button"><b>Start again</b></button>
+        <button class="try-button"><b>New conversation</b></button>
     </a> 
-</section>
+  </section>
+  
+  <section id="loading">
+    <p>Loading...</p>
+  </section>
+
+  <section id="response-container">
+  </section>
   
 </body>
 
 <script>
-
   const dalaiInput = document.getElementById('dalai-input');
   const dalaiBtn = document.getElementById('dalai-btn');
-  const dalaiResponse = document.getElementById('dalai-response');
-  const loadingScreen = document.getElementById('loading')
-  const enterText = document.getElementById('dalai-prompt')
+  const responseContainer = document.getElementById('response-container');
+  const loadingScreen = document.getElementById('loading');
   const tryAgain = document.getElementById('try-again')
 
-  loadingScreen.style.display = "none"
-  tryAgain.style.display = "none"
+  loadingScreen.style.display = "none";
 
   dalaiBtn.addEventListener('click', async () => {
     if (dalaiInput.value) {
-      
-      dalaiInput.style.display = "none"
-      dalaiBtn.style.display = "none"
-      loadingScreen.style.display = "flex"
-      enterText.style.display = "none"
+      dalaiInput.style.display = "none";
+      dalaiBtn.style.display = "none";
+      loadingScreen.style.display = "flex";
 
+      // Store and display user input
+      const userInput = document.createElement('div');
+      userInput.classList.add('user-input');
+      userInput.textContent = dalaiInput.value;
+      responseContainer.appendChild(userInput);
 
       const response = await fetch('/dalai_request', {
         method: 'POST',
@@ -137,18 +159,22 @@ body {
         },
         body: JSON.stringify({ input: 
         `Below is an instruction that describes a task, paired with an input that provides further context. Write a response that appropriately completes the request.
-        ### Instruction: "${dalaiInput.value}"
+        ### Instruction:"${dalaiInput.value}"
         ### Response: `
         })
-
       });
+
       const data = await response.json();
-      dalaiInput.style.display = "none"
-      loadingScreen.style.display = "none"
-      enterText.style.display = "none"
-      dalaiInput.style.display = "none"
-      tryAgain.style.display = "flex"
-      dalaiResponse.innerHTML = `<p>${data.chatsays}</p>`;
+      
+      const newResponse = document.createElement('div');
+      newResponse.classList.add('response');
+      newResponse.innerHTML = `<p>${data.chatsays}</p>`;
+      responseContainer.appendChild(newResponse);
+      
+      dalaiInput.value = "";
+      dalaiInput.style.display = "block";
+      dalaiBtn.style.display = "block";
+      loadingScreen.style.display = "none";
     }
   });
 </script>
