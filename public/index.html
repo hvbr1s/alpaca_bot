@@ -111,14 +111,16 @@
     </style>
 </head>
 <body>
-  <h1>Alpaca Bot &#129433;</h1>
+  <h1>Alpaca Chat &#129433;</h1>
 
   <label for="dalai-input" id="dalai-prompt">Type your question:</label>
+
   <input id="dalai-input" type="text">
-  <button id="dalai-btn">Submit</button>
+  
+  <button id="dalai-btn"><b>Submit</b></button>
   <section id="try-again">
     <a href="http://localhost:8888/">
-        <button class="try-button"><b>New conversation</b></button>
+        <button class="try-button">New conversation</button>
     </a> 
   </section>
   
@@ -132,6 +134,8 @@
 </body>
 
 <script>
+
+
   const dalaiInput = document.getElementById('dalai-input');
   const dalaiBtn = document.getElementById('dalai-btn');
   const responseContainer = document.getElementById('response-container');
